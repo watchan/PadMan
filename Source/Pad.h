@@ -18,17 +18,17 @@ public:
     
     //setter
     //void setColour(juce::Colour newColour);
-    void setOrgColour();
+    void setDefaultColour();
     void setCurrentColour(juce::Colour newColour);
     void setCurrentColourMidiMessage(juce::MidiMessage message);
-    void setOrgColourMidiMessage();
-    void returnOrgColour();
+    void setDefaultColourMidiMessage();
+    void returnDefaultColour();
     void setNoteNumber(int noteNumber);
     void setSustainStatus(bool sustainStatus);
     
     
     //getter
-    juce::MidiMessage getOrgColourMidiMessage();
+    juce::MidiMessage getDefaultColourMidiMessage();
     int getNoteNumber();
     int getDegree(int root);
     std::string getDegreeName(int root);
