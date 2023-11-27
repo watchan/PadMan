@@ -13,8 +13,10 @@
       <FILE id="QFKVAu" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="BxOLaq" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
-      <FILE id="Gook20" name="Pad.cpp" compile="1" resource="0" file="Source/Pad.cpp"/>
-      <FILE id="VIfl5E" name="Pad.h" compile="0" resource="0" file="Source/Pad.h"/>
+      <FILE id="fdT4Xq" name="Pad.cpp" compile="1" resource="0" file="Source/Pad.cpp"/>
+      <FILE id="sSCvaD" name="Pad.h" compile="0" resource="0" file="Source/Pad.h"/>
+      <FILE id="Uw2L0Z" name="PadDevice.cpp" compile="1" resource="0" file="Source/PadDevice.cpp"/>
+      <FILE id="UlKPlK" name="PadDevice.h" compile="0" resource="0" file="Source/PadDevice.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
