@@ -10,16 +10,23 @@
 
 #include "PadDevice.h"
 
-//init
-void PadDevice::init(int row, int col, int key, int startNoteNumber, int octave)
+using namespace std;
+
+/// Initialize Pad Device
+/// - Parameters:
+///   - row: Number of Pad row
+///   - col: Number of Pad col
+///   - transpose:Transpose
+///   - startNoteNumber: MIDI Note Number of Pad Index 0
+///   - octave: Octave
+void PadDevice::init(int row, int col, int transpose, int startNoteNumber, int octave)
 {
     setRow(row);
     setCol(col);
     
-    
-    for(int notenum = startNoteNumber + key * octave , padnum = 0 ; padnum < row * col ; padnum++)
+    for(int notenum = startNoteNumber + transpose * octave , padnum = 0 ; padnum < row * col ; padnum++)
     {
-        
+       
         // 2行目以降
         if(padnum / 8 > 0)
         {
@@ -29,20 +36,24 @@ void PadDevice::init(int row, int col, int key, int startNoteNumber, int octave)
                 int tmpNoteNum = notenum - (3 - padnum % 8);
                 
                 pads.at(padnum).setNoteNumber(tmpNoteNum);
-                //cells.at(cellnum).setButtonText(to_string(tmpNoteNum));
+                pads.at(padnum).setButtonText(to_string(tmpNoteNum));
                 
-            }else
+            }
+            else
             {
                 pads.at(padnum).setNoteNumber(notenum);
-                //cells.at(cellnum).setButtonText(to_string(notenum));
+                pads.at(padnum).setButtonText(to_string(notenum));
                 notenum++;
             }
-        }else
+            
+        }
+        else
         {
             pads.at(padnum).setNoteNumber(notenum);
-            //cells.at(cellnum).setButtonText(to_string(notenum));
+            pads.at(padnum).setButtonText(to_string(notenum));
             notenum++;
         }
+   
     }
     
 }
@@ -104,6 +115,9 @@ bool PadDevice::getSustainPedalState()
         return false;
     }
 }
+
+
+
 
 
 
