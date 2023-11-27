@@ -9,7 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-
+#include "PadDevice.h"
 //==============================================================================
 /**
 */
@@ -20,6 +20,10 @@ public:
     PadManAudioProcessor();
     ~PadManAudioProcessor() override;
 
+    //=PadMan=======================================================================
+    PadDevice padDevice;
+    
+    
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
