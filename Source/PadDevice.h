@@ -11,18 +11,19 @@
 #pragma once
 #include "Pad.h"
 #define MAX_PADNUM 200
+/// MIDI Controler Class (ex LauchPad, Ableton Push, Linnstrument)
 class PadDevice
 {
 public:
     
 
-    //Pad1つ1つをPadとして扱う
+    //Deal pads as a vector
     std::vector<Pad> pads{MAX_PADNUM};
   
-    //init
+    //Initialize
     void init(int row, int col, int key, int startNoteNumber, int octave);
     
-    //getter
+    //Getter
     int getOctave();
     int getStartNote();
     bool getSustainState();
@@ -36,7 +37,7 @@ public:
 
     
     
-    //setter
+    //Setter
     void setOctave(int octave);
     void setRoteNoteNumber(int rootNoteNumber);
     void setStartNote(int startNote);
