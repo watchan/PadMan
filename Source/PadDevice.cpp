@@ -10,14 +10,21 @@
 
 #include "PadDevice.h"
 
-//init
-void PadDevice::init(int row, int col, int key, int startNoteNumber, int octave)
+
+/// Initialize Pad Device
+/// - Parameters:
+///   - row: Number of Pad row
+///   - col: Number of Pad col
+///   - transpose:Transpose
+///   - startNoteNumber: MIDI Note Number of Pad Index 0
+///   - octave: Octave
+void PadDevice::init(int row, int col, int transpose, int startNoteNumber, int octave)
 {
     setRow(row);
     setCol(col);
     
     
-    for(int notenum = startNoteNumber + key * octave , padnum = 0 ; padnum < row * col ; padnum++)
+    for(int notenum = startNoteNumber + transpose * octave , padnum = 0 ; padnum < row * col ; padnum++)
     {
         
         // 2行目以降
