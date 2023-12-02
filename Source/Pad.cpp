@@ -16,9 +16,9 @@ void Pad::setCurrentColour(juce::Colour newColour)
     this->currentColour = newColour;
 }
 
-void Pad::setOrgColour()
+void Pad::setDefaultColour()
 {
-    this->orgColour = this->currentColour;
+    this->defaultColour = this->currentColour;
 }
 
 void Pad::setCurrentColourMidiMessage(juce::MidiMessage message)
@@ -26,14 +26,14 @@ void Pad::setCurrentColourMidiMessage(juce::MidiMessage message)
     this->currentColourMidi = message;
 }
 
-void Pad::setOrgColourMidiMessage()
+void Pad::setDefaultColourMidiMessage()
 {
     this->orgColourMidi = this->currentColourMidi;
 }
 
-void Pad::returnOrgColour()
+void Pad::returnDefaultColour()
 {
-     setColour(juce::TextButton::buttonColourId,this->orgColour);
+     setColour(juce::TextButton::buttonColourId,this->defaultColour);
 }
 
 void Pad::setNoteNumber(int noteNumber)
@@ -55,7 +55,7 @@ bool Pad::getSustainStatus()
     return this->sustainStatus;
 }
 
-juce::MidiMessage Pad::getOrgColourMidiMessage()
+juce::MidiMessage Pad::getDefaultColourMidiMessage()
 {
     return this->orgColourMidi;
 }
