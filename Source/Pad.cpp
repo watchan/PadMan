@@ -20,6 +20,7 @@ void Pad::setCurrentColour(juce::Colour newColour)
 void Pad::setDefaultColour()
 {
     this->defaultColour = this->currentColour;
+    this->setColour(ColourIds::buttonColourId,this->defaultColour);
 }
 
 void Pad::setCurrentColourMidiMessage(juce::MidiMessage message)

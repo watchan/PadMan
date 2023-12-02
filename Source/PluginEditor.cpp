@@ -27,8 +27,8 @@ PadManAudioProcessorEditor::PadManAudioProcessorEditor (PadManAudioProcessor& p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    audioProcessor.padDevice.init(PAD_ROW, PAD_COL, PAD_KEY, PAD_START_NOTENUMBER, PAD_OCTAVE);
-    
+    //padDevice.init(PAD_ROW, PAD_COL, PAD_KEY, PAD_START_NOTENUMBER, PAD_OCTAVE);
+    padDevice.init(PAD_ROW, PAD_COL, PAD_KEY, PAD_START_NOTENUMBER, PAD_OCTAVE);
     
     /* LaunchPadMk3のライティング制御
     //LaunchPadProMk3を探す
@@ -57,7 +57,7 @@ PadManAudioProcessorEditor::PadManAudioProcessorEditor (PadManAudioProcessor& p)
     
     
     //ウィンドウサイズ
-   setSize ( audioProcessor.padDevice.getMargin() + (audioProcessor.padDevice.getMargin() + audioProcessor.padDevice.getButtonSize()) * audioProcessor.padDevice.getCol(), (audioProcessor.padDevice.getMargin() + audioProcessor.padDevice.getButtonSize()) * audioProcessor.padDevice.getRow() + KEY_HEIGHT + MIDI_INPUT_LIST + audioProcessor.padDevice.getMargin() * 2);
+   setSize ( padDevice.getMargin() + (padDevice.getMargin() + padDevice.getButtonSize()) * padDevice.getCol(), (padDevice.getMargin() + padDevice.getButtonSize()) * padDevice.getRow() + KEY_HEIGHT + MIDI_INPUT_LIST + padDevice.getMargin() * 2);
     
 
     
@@ -105,15 +105,15 @@ PadManAudioProcessorEditor::PadManAudioProcessorEditor (PadManAudioProcessor& p)
     midiMessagesBox.setColour (juce::TextEditor::outlineColourId, juce::Colour (0x1c000000));
     midiMessagesBox.setColour (juce::TextEditor::shadowColourId, juce::Colour (0x16000000));
 
-    //setSize (600, 400);
+
     
   
     //Editorに各PadをaddAndMakeVisibleする
-    for(int i=0,padnum=0; i < audioProcessor.padDevice.getRow() ; i++)
+    for(int i=0,padnum=0; i < padDevice.getRow() ; i++)
     {
-        for(int j=0 ; j < audioProcessor.padDevice.getCol() ; j++)
+        for(int j=0 ; j < padDevice.getCol() ; j++)
         {
-            addAndMakeVisible(audioProcessor.padDevice.pads.at(padnum));
+            addAndMakeVisible(padDevice.pads.at(padnum));
             padnum++;
         }
     
@@ -142,7 +142,7 @@ void PadManAudioProcessorEditor::paint (juce::Graphics& g)
 
 void PadManAudioProcessorEditor::resized()
 {
-    DBG("resized");
+    
     auto area = getLocalBounds();
 
 //    tb.setSize(50, 50);
@@ -158,38 +158,38 @@ void PadManAudioProcessorEditor::resized()
     
     //Padの情報に合わせて配置を決める
     auto bounds = getLocalBounds();
-    int bottom = bounds.getHeight() -  audioProcessor.padDevice.getButtonSize() -  audioProcessor.padDevice.getMargin();
-    int left = bounds.getX() +  audioProcessor.padDevice.getMargin();
+    int bottom = bounds.getHeight() -  padDevice.getButtonSize() -  padDevice.getMargin();
+    int left = bounds.getX() +  padDevice.getMargin();
         
     //Padを配置する
-    for(int i=0 ; i <  audioProcessor.padDevice.getRow() ; i++)
+    for(int i=0 ; i <  padDevice.getRow() ; i++)
     {
        
         
-        for(int j=0 ; j <  audioProcessor.padDevice.getCol() ; j++)
+        for(int j=0 ; j <  padDevice.getCol() ; j++)
         {
            // pad.pads.at(cellnum).setButtonText(to_string(cellnum));
-            audioProcessor.padDevice.pads.at(padnum).setBounds(left +  audioProcessor.padDevice.getMargin() * j +  audioProcessor.padDevice.getButtonSize() * j, bottom - ( audioProcessor.padDevice.getMargin() * i +  audioProcessor.padDevice.getButtonSize() * i),  audioProcessor.padDevice.getButtonSize() ,  audioProcessor.padDevice.getButtonSize());
+            padDevice.pads.at(padnum).setBounds(left +  padDevice.getMargin() * j +  padDevice.getButtonSize() * j, bottom - ( padDevice.getMargin() * i +  padDevice.getButtonSize() * i),  padDevice.getButtonSize() ,  padDevice.getButtonSize());
             
          
             
             int offset;
             
-            if( audioProcessor.padDevice.getCol() > 12)
+            if( padDevice.getCol() > 12)
             {
-                offset =  audioProcessor.padDevice.getFinger() - 1;
+                offset =  padDevice.getFinger() - 1;
             }else{
-                offset =  audioProcessor.padDevice.getFinger() -  audioProcessor.padDevice.getCol();
+                offset =  padDevice.getFinger() -  padDevice.getCol();
             }
-            switch((padnum + offset * i +  audioProcessor.padDevice.getStartNote())%12){
+            switch((padnum + offset * i +  padDevice.getStartNote())%12){
                 case 0://Root
-                    DBG(audioProcessor.padDevice.pads.at(padnum).getNoteNumber() << ":Root");
-                    audioProcessor.padDevice.pads.at(padnum).setCurrentColour(juce::Colours::violet);
-                    audioProcessor.padDevice.pads.at(padnum).setDefaultColour();
+                  
+                    padDevice.pads.at(padnum).setCurrentColour(juce::Colours::violet);
+                    padDevice.pads.at(padnum).setDefaultColour();
                     
-                    //audioProcessor.padDevice.pads.at(padnum).setCurrentColourMidiMessage({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  j + 10 * i + 11, 0x3B, 0xF7});
-                    //audioProcessor.padDevice.pads.at(padnum).setDefaultColour();
-                    //audioProcessor.padDevice.pads.at(padnum).setDefaultColourMidiMessage();
+                    //padDevice.pads.at(padnum).setCurrentColourMidiMessage({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  j + 10 * i + 11, 0x3B, 0xF7});
+                    //padDevice.pads.at(padnum).setDefaultColour();
+                    //padDevice.pads.at(padnum).setDefaultColourMidiMessage();
 
                     //audioProcessor.outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  j + 10 * i + 11, 0x3B, 0xF7});
                     
@@ -199,12 +199,12 @@ void PadManAudioProcessorEditor::resized()
                 case 6://a4,d5
                 case 8://m6
                 case 10://m7
-                    audioProcessor.padDevice.pads.at(padnum).setCurrentColour(juce::Colours::darkslategrey);
-                    audioProcessor.padDevice.pads.at(padnum).setDefaultColour();
+                    padDevice.pads.at(padnum).setCurrentColour(juce::Colours::darkslategrey);
+                    padDevice.pads.at(padnum).setDefaultColour();
  
-                    //audioProcessor.padDevice.pads.at(padnum).setCurrentColourMidiMessage({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,   j + 10 * i + 11, 0, 0xF7});
-                    //audioProcessor.padDevice.pads.at(padnum).setOrgColour();
-                    //audioProcessor.padDevice.pads.at(padnum).setDefaultColourMidiMessage();
+                    //padDevice.pads.at(padnum).setCurrentColourMidiMessage({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,   j + 10 * i + 11, 0, 0xF7});
+                    //padDevice.pads.at(padnum).setOrgColour();
+                    //padDevice.pads.at(padnum).setDefaultColourMidiMessage();
                     
                     //audioProcessor.outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,   j + 10 * i + 11, 0, 0xF7});
 
@@ -215,12 +215,12 @@ void PadManAudioProcessorEditor::resized()
                 case 7://P5
                 case 9://M6
                 case 11://M7
-                    audioProcessor.padDevice.pads.at(padnum).setCurrentColour(juce::Colours::lightskyblue);
-                    audioProcessor.padDevice.pads.at(padnum).setDefaultColour();
+                    padDevice.pads.at(padnum).setCurrentColour(juce::Colours::lightskyblue);
+                    padDevice.pads.at(padnum).setDefaultColour();
  
-                    //audioProcessor.padDevice.pads.at(padnum).setCurrentColourMidiMessage({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,   j + 10 * i + 11, 0x01, 0xF7});
-                    //audioProcessor.padDevice.pads.at(padnum).setOrgColour();
-                    //audioProcessor.padDevice.pads.at(padnum).setDefaultColourMidiMessage();
+                    //padDevice.pads.at(padnum).setCurrentColourMidiMessage({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,   j + 10 * i + 11, 0x01, 0xF7});
+                    //padDevice.pads.at(padnum).setOrgColour();
+                    //padDevice.pads.at(padnum).setDefaultColourMidiMessage();
                     //audioProcessor.outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,   j + 10 * i + 11, 0x01, 0xF7});
                      break;
                     
@@ -237,7 +237,7 @@ void PadManAudioProcessorEditor::resized()
 
     }
     
-    modifyPadDevice();
+    modifyPad();
      
    
     

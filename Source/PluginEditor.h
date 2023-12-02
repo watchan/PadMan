@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+using namespace std;
 
 //==============================================================================
 /**
@@ -87,7 +88,7 @@ private:
         const juce::ScopedValueSetter<bool> scopedInputFlag (isAddingFromMidiInput, true);
         keyboardState.processNextMidiEvent (message);
         postMessageToList (message, source->getName());
-        DBG("handleIncomingMidiMessage");
+       
     }
 
     void handleNoteOn (juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override
@@ -112,7 +113,7 @@ private:
         {
             auto m = juce::MidiMessage::noteOff (midiChannel, midiNoteNumber);
             m.setTimeStamp (juce::Time::getMillisecondCounterHiRes() * 0.001);
-            postMessageToList (m, "On-Screen Keyboard");
+            //postMessageToList (m, "On-Screen Keyboard");
         }
     }
 
@@ -144,132 +145,315 @@ private:
     void handleMidiMessage (const juce::MidiMessage& message, const juce::String& source)
     {
         auto time = message.getTimeStamp() - startTime;
-
+        
         auto hours   = ((int) (time / 3600.0)) % 24;
         auto minutes = ((int) (time / 60.0)) % 60;
         auto seconds = ((int) time) % 60;
         auto millis  = ((int) (time * 1000.0)) % 1000;
-
+        
         auto timecode = juce::String::formatted ("%02d:%02d:%02d.%03d",
                                                  hours,
                                                  minutes,
                                                  seconds,
                                                  millis);
-
+        
         auto description = getMidiMessageDescription (message);
-
+        
         juce::String midiMessageString (timecode + "  -  " + description + " (" + source + ")"); // [7]
-        logMessage (midiMessageString);
-        DBG(midiMessageString);
+        //logMessage (midiMessageString);
+        //DBG(midiMessageString);
         
         
-        if(message.isNoteOn())
-        {
-            DBG("isNoteOn()");
+        //Handling MIDI message
+        
+            
+            if(message.isNoteOn())
+            {
+                addNoteNumberToChord(chord, message.getNoteNumber());
+          
+            }
+            
+            if(message.isNoteOff())
+            {
+                removeNoteNumberFromChord(chord, message.getNoteNumber());
+            }
+                
+            if(message.isSustainPedalOn())
+            {
+                //isSustainPedalOn = true;
+                padDevice.setSustainState(true);
+            }
+        
+            if(message.isSustainPedalOff())
+            {
+                padDevice.setSustainState(false);
 
-        }
-        if(message.isNoteOff())
-        {
-            DBG("isNoteOff()");
-        }
+            }
+            
+            
+            DBG(message.getDescription());
+            
+          
+
+            
+            modifyPad();
+
         
-        if(message.isSustainPedalOn())
-        {
-            DBG("isSustainPedalOn()");
-            isSustainPedalOn = true;
-        }
-        
-        if(message.isSustainPedalOff())
-        {
-            DBG("isSustainPedalOff()");
-            isSustainPedalOn = false;
-        }
-        
-        
+            if(chord.size()==0)
+            {
+                rootNoteNumber = 128;
+            }
+            
+            
+            showChord(chord);
+            //DBG(recognizeChord(chord));
+            
         
         
     }
     
     
     
-    
-    void modifyPadDevice()
+    //Find the noteNumber from chord vector
+    int findNoteNumber(vector<int> chord, int noteNumber)
     {
-       
-        for(int i=0 ; i < padDevice.getSize() ; i++)
+        auto itr = std::find(chord.begin(), chord.end(), noteNumber);
+        size_t index = std::distance ( chord.begin(), itr);
+        if(index != chord.size())
         {
-           
-           /*
-            if(!padDevice.getSustainPedalState())
+            return index;
+        }
+        else{
+            return -1;
+        }
+        
+    }
+    
+    std::string recognizeChord(vector<int> chord)
+    {
+        vector<int> degree;
+        
+        for(int i=0 ; i < chord.size() ; i++)
+        {
+            int tmpDegree = chord.at(i) % 12;
+            
+            if(findNoteNumber(degree, tmpDegree)== -1 )
             {
-                padDevice.pads.at(i).returnOrgColour();
-                padDevice.pads.at(i).setButtonText("");
-                //outDevice->sendMessageNow(padDevice.pads.at(i).getOrgColourMidiMessage());
-       
+                degree.push_back(tmpDegree);
             }
             
+        }
+        
+        sort(degree.begin(),degree.end());
+        
+        for(int i=0 ; i < degree.size() ; i++)
+        {
+           // std::cout << degree.at(i) << ",";
+        }
+        
+        //std::cout << "\n";
+        
+        std::string chordName = "";
+        
+        if(degree.size()==1)
+        {
+            switch(degree.at(0))
+            {
+                case 0:
+                    chordName += "C";
+                    return chordName;
+                    break;
+                case 1:
+                    return "C#";
+                    break;
+                case 2:
+                    return "D";
+                    break;
+                case 3:
+                    return "D#";
+                    break;
+                case 4:
+                    return "E";
+                    break;
+                case 5:
+                    return "F";
+                    break;
+                case 6:
+                    return "F#";
+                    break;
+                case 7:
+                    return "G";
+                    break;
+                case 8:
+                    return "G#";
+                    break;
+                case 9:
+                    return "A";
+                    break;
+                case 10:
+                    return "A#";
+                    break;
+                case 11:
+                    return "B";
+                    break;
+ 
+                default:
+                    return "X";
+                    break;
+                    
+            }
+        }
+        
+        return "Y";
+            
+       
+        
+    }
+    
+    
+    void addNoteNumberToChord(vector<int> &chord, int noteNumber){
+    
+        if(findNoteNumber(chord, noteNumber)== -1)
+        {
+            //含まれていなければnoteNumberをchordに格納
+            chord.push_back(noteNumber);
+            
+            //低い音から順に並べる
+            sort(chord.begin(), chord.end());
+            
+            //最低音が更新されたらrootNoteNumberを更新する
+            if(noteNumber < rootNoteNumber)
+            {
+                rootNoteNumber = noteNumber;
+            }
+            
+        }
+    }
+    
+    void removeNoteNumberFromChord(vector<int> &chord, int noteNumber)
+    {
+        int index = findNoteNumber(chord, noteNumber);
+        //chordの中にnoteNumberが存在することが確認できたら
+        if(index != -1)
+        {
+            //chordの中の要素が1つ以上あれば
+            if(chord.size()>1)
+            {
+                
+                //削除対象がrootNoteNumberだった場合
+                if(chord.at(index)== rootNoteNumber)
+                {
+                    //2番めに低い音をrootNoteNumberとして更新 ：理由 rootNoteNumberが削除されルートがわからなくため
+                    rootNoteNumber = chord.at(index+1);
+                }
+                
+            }
+            
+            //見つかったnoteNumberをchordからeraseする
+            chord.erase(std::cbegin(chord) + index);
+
+        }
+        
+    }
+    
+    
+    
+    /// Modify pad lighting following the MIDI input
+    void modifyPad()
+    {
+      
+        for(int i=0 ; i < padDevice.getSize() ; i++)
+        {
+            
+        
+             if(!padDevice.getSustainPedalState())
+             {
+             padDevice.pads.at(i).returnDefaultColour();
+             padDevice.pads.at(i).setButtonText("");
+             //outDevice->sendMessageNow(padDevice.pads.at(i).getDefaultColourMidiMessage());
+             
+             }
+           
             //コード色判定
             for(int j = 0 ; j < chord.size() ; j++)
             {
+                
+              
                 if(padDevice.pads.at(i).getNoteNumber() == chord.at(j))
                 {
-                    Colour colour;
-                    int degree = padDevice.pads.at(i).getDegree(rootNoteNumber);
-                     
-
-                    //度数ごとの色設定
-                    switch(degree)
-                    {
-                           
-                        case 0://root
-                            colour = juce::Colours::red;
-                            padDevice.pads.at(i).setColour(juce::TextButton::buttonColourId, colour);
-                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x48, 0xF7});
-                            break;
-                            
-                        case 1: //Minor
-                        case 3:
-                        case 8:
-                        case 10:
-                            colour = juce::Colours::mediumvioletred;
-                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x51, 0xF7});
-                            break;
-                            
-                        case 2:
-                        case 4: //Major
-                        case 9:
-                        case 11:
-                            colour = juce::Colours::steelblue;
-                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x42, 0xF7});
-                             break;
-  
-                        case 6: //Diminished
-                            colour = juce::Colours::blueviolet;
-                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x50, 0xF7});
- 
-                            break;
-                      
-                        case 5: // Perfect
-                        case 7:
-                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x65, 0xF7});
-                             colour = juce::Colours::green;
-                            break;
-                        default :
-                           colour = juce::Colours::dimgrey;
-                            break;
-                            
-                    }
-             */
                     
-                    //padDevice.pads.at(i).setButtonText(padDevice.pads.at(i).getDegreeName(rootNoteNumber));
-            
-            
-            
+                    /*
+                     int degree = padDevice.pads.at(i).getDegree(rootNoteNumber);
+                     
+                     
+                     //度数ごとの色設定
+                     switch(degree)
+                     {
+                     
+                     
+                     case 0://root
+                     colour = juce::Colours::red;
+                     padDevice.pads.at(i).setColour(juce::TextButton::buttonColourId, colour);
+                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x48, 0xF7});
+                     break;
+                     
+                     case 1: //Minor
+                     case 3:
+                     case 8:
+                     case 10:
+                     colour = juce::Colours::mediumvioletred;
+                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x51, 0xF7});
+                     break;
+                     
+                     case 2:
+                     case 4: //Major
+                     case 9:
+                     case 11:
+                     colour = juce::Colours::steelblue;
+                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x42, 0xF7});
+                     break;
+                     
+                     case 6: //Diminished
+                     colour = juce::Colours::blueviolet;
+                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x50, 0xF7});
+                     
+                     break;
+                     
+                     case 5: // Perfect
+                     case 7:
+                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x65, 0xF7});
+                     colour = juce::Colours::green;
+                     break;
+                     default :
+                     colour = juce::Colours::dimgrey;
+                     break;
+                     
+                     
+                     */
+                     colour = juce::Colours::lime;
+                     padDevice.pads.at(i).setColour(juce::TextButton::ColourIds::buttonColourId, colour);
+                     
+                     
+                     
+                }
+            }
+        }
+    }
+    
+    
+
+    void showChord(vector<int> chord)
+    {
+        std::cout << "showChord:";
+        for(int i=0 ; i<chord.size(); i++)
+        {
+            std::cout << chord.at(i) << " ";
         }
         
-
-    
+        std::cout << "\n";
     }
+    
+
 
     
     //==============================================================================
@@ -290,7 +474,9 @@ private:
     
     bool isSustainPedalOn;
     
-    
+    //Input MIDI note vector
+    vector<int> chord;
+    int rootNoteNumber = 128;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PadManAudioProcessorEditor)
     
     
