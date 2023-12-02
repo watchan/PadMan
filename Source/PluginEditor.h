@@ -127,7 +127,7 @@ private:
         void messageCallback() override
         {
             if (owner != nullptr)
-                owner->addMessageToList (message, source);
+                owner->handleMidiMessage (message, source);
         }
 
         Component::SafePointer<PadManAudioProcessorEditor> owner;
@@ -140,7 +140,8 @@ private:
         (new IncomingMessageCallback (this, message, source))->post();
     }
 
-    void addMessageToList (const juce::MidiMessage& message, const juce::String& source)
+    
+    void handleMidiMessage (const juce::MidiMessage& message, const juce::String& source)
     {
         auto time = message.getTimeStamp() - startTime;
 
@@ -160,7 +161,32 @@ private:
         juce::String midiMessageString (timecode + "  -  " + description + " (" + source + ")"); // [7]
         logMessage (midiMessageString);
         DBG(midiMessageString);
-      
+        
+        
+        if(message.isNoteOn())
+        {
+            DBG("isNoteOn()");
+
+        }
+        if(message.isNoteOff())
+        {
+            DBG("isNoteOff()");
+        }
+        
+        if(message.isSustainPedalOn())
+        {
+            DBG("isSustainPedalOn()");
+            isSustainPedalOn = true;
+        }
+        
+        if(message.isSustainPedalOff())
+        {
+            DBG("isSustainPedalOff()");
+            isSustainPedalOn = false;
+        }
+        
+        
+        
         
     }
     
@@ -262,7 +288,7 @@ private:
     PadDevice padDevice;
     juce::Colour colour;
     
-    juce::TextButton tb;
+    bool isSustainPedalOn;
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PadManAudioProcessorEditor)

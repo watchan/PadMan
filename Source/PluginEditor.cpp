@@ -59,8 +59,7 @@ PadManAudioProcessorEditor::PadManAudioProcessorEditor (PadManAudioProcessor& p)
     //ウィンドウサイズ
    setSize ( audioProcessor.padDevice.getMargin() + (audioProcessor.padDevice.getMargin() + audioProcessor.padDevice.getButtonSize()) * audioProcessor.padDevice.getCol(), (audioProcessor.padDevice.getMargin() + audioProcessor.padDevice.getButtonSize()) * audioProcessor.padDevice.getRow() + KEY_HEIGHT + MIDI_INPUT_LIST + audioProcessor.padDevice.getMargin() * 2);
     
-    tb.setTitle("TEST");
-    addAndMakeVisible(tb);
+
     
     addAndMakeVisible (midiInputListLabel);
     midiInputListLabel.setText ("MIDI Input:", juce::dontSendNotification);

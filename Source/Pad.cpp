@@ -14,6 +14,7 @@
 void Pad::setCurrentColour(juce::Colour newColour)
 {
     this->currentColour = newColour;
+    this->setColour(ColourIds::buttonColourId,newColour);
 }
 
 void Pad::setDefaultColour()
