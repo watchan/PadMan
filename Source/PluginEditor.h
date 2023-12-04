@@ -364,8 +364,10 @@ private:
       
         for(int i=0 ; i < padDevice.getSize() ; i++)
         {
+            padDevice.pads.at(i).returnDefaultColour();
+            padDevice.pads.at(i).setButtonText("");
             
-        
+            /*
              if(!padDevice.getSustainPedalState())
              {
              padDevice.pads.at(i).returnDefaultColour();
@@ -373,6 +375,7 @@ private:
              //outDevice->sendMessageNow(padDevice.pads.at(i).getDefaultColourMidiMessage());
              
              }
+             */
            
             //コード色判定
             for(int j = 0 ; j < chord.size() ; j++)
@@ -382,58 +385,63 @@ private:
                 if(padDevice.pads.at(i).getNoteNumber() == chord.at(j))
                 {
                     
-                    /*
-                     int degree = padDevice.pads.at(i).getDegree(rootNoteNumber);
+                  
+                    int degree = padDevice.pads.at(i).getDegree(rootNoteNumber);
+                    string padText;
                      
-                     
-                     //度数ごとの色設定
-                     switch(degree)
-                     {
-                     
-                     
-                     case 0://root
-                     colour = juce::Colours::red;
-                     padDevice.pads.at(i).setColour(juce::TextButton::buttonColourId, colour);
-                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x48, 0xF7});
-                     break;
-                     
-                     case 1: //Minor
-                     case 3:
-                     case 8:
-                     case 10:
-                     colour = juce::Colours::mediumvioletred;
-                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x51, 0xF7});
-                     break;
-                     
-                     case 2:
-                     case 4: //Major
-                     case 9:
-                     case 11:
-                     colour = juce::Colours::steelblue;
-                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x42, 0xF7});
-                     break;
-                     
-                     case 6: //Diminished
-                     colour = juce::Colours::blueviolet;
-                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x50, 0xF7});
-                     
-                     break;
-                     
-                     case 5: // Perfect
-                     case 7:
-                     //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x65, 0xF7});
-                     colour = juce::Colours::green;
-                     break;
-                     default :
-                     colour = juce::Colours::dimgrey;
-                     break;
-                     
-                     
-                     */
-                     colour = juce::Colours::lime;
-                     padDevice.pads.at(i).setColour(juce::TextButton::ColourIds::buttonColourId, colour);
-                     
-                     
+                     //度数判定
+                    switch(degree)
+                    {
+                            
+                        case 0://root
+                            colour = juce::Colours::red;
+                           
+                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x48, 0xF7});
+                            break;
+
+                        case 1: //Minor
+                        case 3:
+                        case 8:
+                        case 10:
+                            colour = juce::Colours::mediumvioletred;
+                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x51, 0xF7});
+                            break;
+                            
+                        case 2:
+                        case 4: //Major
+                        case 9:
+                        case 11:
+                            colour = juce::Colours::steelblue;
+                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x42, 0xF7});
+                            break;
+                            
+                        case 6: //Diminished
+                            colour = juce::Colours::blueviolet;
+                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x50, 0xF7});
+                            break;
+                            
+                        case 5: // Perfect
+                        case 7:
+                            //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x65, 0xF7});
+                            colour = juce::Colours::green;
+                            break;
+                        default :
+                            colour = juce::Colours::dimgrey;
+                            break;
+                            
+       
+                            
+                            // colour = juce::Colours::lime;
+                            // padDevice.pads.at(i).setColour(juce::TextButton::ColourIds::buttonColourId, colour);
+                    }
+                    
+                    //度数ごとの色を反映
+                    padDevice.pads.at(i).setCurrentColour(colour);
+                    
+                    //Padに度数をセット
+                    padDevice.pads.at(i).setPadText(padDevice.pads.at(i).getDegreeName(rootNoteNumber));
+                    
+            
                      
                 }
             }

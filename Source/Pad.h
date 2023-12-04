@@ -11,6 +11,8 @@
 #pragma once
 #include <JuceHeader.h>
 
+using namespace std;
+
 class Pad : public juce::TextButton
 {
 public:
@@ -23,6 +25,7 @@ public:
     void setDefaultColourMidiMessage();
     void returnDefaultColour();
     void setNoteNumber(int noteNumber);
+    void setPadText(string text);
     void setSustainStatus(bool sustainStatus);
     
     
@@ -32,7 +35,7 @@ public:
     int getDegree(int root);
     std::string getDegreeName(int root);
     bool getSustainStatus();
-    
+
  
 
 private:
