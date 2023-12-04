@@ -34,6 +34,7 @@ public:
     int getCol();
     int getSize();
     bool getSustainPedalState();
+    
 
     
     

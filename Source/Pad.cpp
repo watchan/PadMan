@@ -9,7 +9,7 @@
 */
 
 #include "Pad.h"
-
+using namespace std;
 
 void Pad::setCurrentColour(juce::Colour newColour)
 {
@@ -41,6 +41,12 @@ void Pad::returnDefaultColour()
 void Pad::setNoteNumber(int noteNumber)
 {
     this->noteNumber = noteNumber;
+}
+
+void Pad::setPadText(string text){
+    
+    this->setButtonText(text);
+    
 }
 
 void Pad::setSustainStatus(bool sustainStatus)
@@ -110,7 +116,7 @@ std::string Pad::getDegreeName(int root)
         }
     }else if(degree==3){
         if(root + 12 < noteNumber){
-            degName="m3";//degName="#9";
+            degName="#9";
         }else{
             degName="m3";
         }
@@ -145,16 +151,14 @@ std::string Pad::getDegreeName(int root)
             degName="M6";
         }
     }else if(degree==10){
-        if(root + 12 < noteNumber){
-           degName="#13";
-        }else{
-            degName="7";
-        }
-        
+
+        degName="7";
+
     }else if(degree==11){
         degName="M7";
     }
     
     return degName;
 }
+
 
