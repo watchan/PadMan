@@ -57,9 +57,16 @@ PadManAudioProcessorEditor::PadManAudioProcessorEditor (PadManAudioProcessor& p)
     
     
     //ウィンドウサイズ
-   setSize ( padDevice.getMargin() + (padDevice.getMargin() + padDevice.getButtonSize()) * padDevice.getCol(), (padDevice.getMargin() + padDevice.getButtonSize()) * padDevice.getRow() + KEY_HEIGHT + MIDI_INPUT_LIST + padDevice.getMargin() * 2);
+   //setSize ( padDevice.getMargin() + (padDevice.getMargin() + padDevice.getButtonSize()) * padDevice.getCol(), (padDevice.getMargin() + padDevice.getButtonSize()) * padDevice.getRow() + KEY_HEIGHT + MIDI_INPUT_LIST + padDevice.getMargin() * 2);
     
-
+    setSize(
+            // Width : Margin + (Margin + Pad) x Number of Pad Row
+            padDevice.getMargin() + (padDevice.getMargin()+padDevice.getButtonSize())*padDevice.getCol(),
+            
+            // Height : margin + Size of Software Keyboard + (Margin + pad) Number of Pad Col
+            padDevice.getMargin() + (padDevice.getMargin() + padDevice.getSize()) * padDevice.getCol()
+            
+            );
     
     addAndMakeVisible (midiInputListLabel);
     midiInputListLabel.setText ("MIDI Input:", juce::dontSendNotification);
@@ -93,20 +100,6 @@ PadManAudioProcessorEditor::PadManAudioProcessorEditor (PadManAudioProcessor& p)
 
     addAndMakeVisible (keyboardComponent);
     keyboardState.addListener (this);
-
-    addAndMakeVisible (midiMessagesBox);
-    midiMessagesBox.setMultiLine (true);
-    midiMessagesBox.setReturnKeyStartsNewLine (true);
-    midiMessagesBox.setReadOnly (true);
-    midiMessagesBox.setScrollbarsShown (true);
-    midiMessagesBox.setCaretVisible (false);
-    midiMessagesBox.setPopupMenuEnabled (true);
-    midiMessagesBox.setColour (juce::TextEditor::backgroundColourId, juce::Colour (0x32ffffff));
-    midiMessagesBox.setColour (juce::TextEditor::outlineColourId, juce::Colour (0x1c000000));
-    midiMessagesBox.setColour (juce::TextEditor::shadowColourId, juce::Colour (0x16000000));
-
-
-    
   
     //Editorに各PadをaddAndMakeVisibleする
     for(int i=0,padnum=0; i < padDevice.getRow() ; i++)
@@ -145,32 +138,32 @@ void PadManAudioProcessorEditor::resized()
     
     auto area = getLocalBounds();
 
-//    tb.setSize(50, 50);
-//    //tb.setColour(juce::TextButton::ColourIds::buttonColourId, juce::Colours::limegreen);
-//    tb               .setBounds (area.removeFromTop(80).reduced(8));
-    midiInputList    .setBounds (area.removeFromTop (36).removeFromRight (getWidth() - 150).reduced (8));
-    keyboardComponent.setBounds (area.removeFromTop (80).reduced(8));
-    //midiMessagesBox  .setBounds (area.reduced (8));
-    
+
+    midiInputList    .setBounds (area.removeFromTop (36).removeFromRight (getWidth() - 150).reduced(8));
+
+    keyboardComponent.setBounds (area.removeFromTop (KEY_HEIGHT));
    
     //Padのインデックス
     int padnum=0;
+
     
     //Padの情報に合わせて配置を決める
-    auto bounds = getLocalBounds();
-    int bottom = bounds.getHeight() -  padDevice.getButtonSize() -  padDevice.getMargin();
-    int left = bounds.getX() +  padDevice.getMargin();
+    //auto bounds = getLocalBounds();
+    //int bottom = area.getHeight() -  padDevice.getButtonSize() +  padDevice.getMargin() ;
+    int bottom = area.getHeight() + KEY_HEIGHT - 36 + padDevice.getMargin();
+    int left = area.getX() +  padDevice.getMargin();
         
     //Padを配置する
     for(int i=0 ; i <  padDevice.getRow() ; i++)
     {
-       
-        
+
         for(int j=0 ; j <  padDevice.getCol() ; j++)
         {
-           // pad.pads.at(cellnum).setButtonText(to_string(cellnum));
-            padDevice.pads.at(padnum).setBounds(left +  padDevice.getMargin() * j +  padDevice.getButtonSize() * j, bottom - ( padDevice.getMargin() * i +  padDevice.getButtonSize() * i),  padDevice.getButtonSize() ,  padDevice.getButtonSize());
             
+
+            padDevice.pads.at(padnum).setBounds(left +  padDevice.getMargin() * j +  padDevice.getButtonSize() * j, bottom - ( padDevice.getMargin() * i +  padDevice.getButtonSize() * i),  padDevice.getButtonSize() ,  padDevice.getButtonSize());
+ 
+
          
             
             int offset;

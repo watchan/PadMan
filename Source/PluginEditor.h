@@ -58,11 +58,7 @@ private:
         return juce::String::toHexString (m.getRawData(), m.getRawDataSize());
     }
 
-    void logMessage (const juce::String& m)
-    {
-        midiMessagesBox.moveCaretToEnd();
-        midiMessagesBox.insertTextAtCaret (m + juce::newLine);
-    }
+   
 
     /** Starts listening to a MIDI input device, enabling it if necessary. */
     void setMidiInput (int index)
@@ -97,14 +93,9 @@ private:
         if (! isAddingFromMidiInput)
         {
             auto m = juce::MidiMessage::noteOn (midiChannel, midiNoteNumber, velocity);
-            m.setTimeStamp (juce::Time::getMillisecondCounterHiRes() * 0.001);
-            postMessageToList (m, "On-Screen Keyboard");
-            
-      
+            handleMidiMessage(m, "Software Keyboard");
         }
-        
-    
-  
+
     }
 
     void handleNoteOff (juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float /*velocity*/) override
@@ -112,8 +103,7 @@ private:
         if (! isAddingFromMidiInput)
         {
             auto m = juce::MidiMessage::noteOff (midiChannel, midiNoteNumber);
-            m.setTimeStamp (juce::Time::getMillisecondCounterHiRes() * 0.001);
-            //postMessageToList (m, "On-Screen Keyboard");
+            handleMidiMessage(m, "Software Keyboard");
         }
     }
 
@@ -165,8 +155,6 @@ private:
         
         
         //Handling MIDI message
-        
-            
             if(message.isNoteOn())
             {
                 addNoteNumberToChord(chord, message.getNoteNumber());
@@ -190,11 +178,7 @@ private:
 
             }
             
-            
             DBG(message.getDescription());
-            
-          
-
             
             modifyPad();
 
