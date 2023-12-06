@@ -153,6 +153,8 @@ void PadManAudioProcessorEditor::resized()
     int bottom = area.getHeight() + KEY_HEIGHT - 36 + padDevice.getMargin();
     int left = area.getX() +  padDevice.getMargin();
         
+    juce::Colour colour;
+    
     //Padを配置する
     for(int i=0 ; i <  padDevice.getRow() ; i++)
     {
@@ -222,6 +224,8 @@ void PadManAudioProcessorEditor::resized()
                 
             }
             
+
+
             padnum++;
                
             

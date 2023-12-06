@@ -383,19 +383,36 @@ private:
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x48, 0xF7});
                             break;
 
-                        case 1: //Minor
-                        case 3:
-                        case 8:
-                        case 10:
-                            colour = juce::Colours::mediumvioletred;
+                        //Minor
+                        case 1: //m2
+                            colour = juce::Colours::deepskyblue;
+                            break;
+                        case 3: //m3
+                            colour = juce::Colours::dodgerblue;
+                            break;
+                        case 8: //m6
+                            colour = juce::Colours::royalblue;
+                            break;
+                            
+                        case 10://7
+                            colour = juce::Colours::blue;
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x51, 0xF7});
                             break;
                             
-                        case 2:
-                        case 4: //Major
-                        case 9:
-                        case 11:
-                            colour = juce::Colours::steelblue;
+                            //Major
+                        case 2: //m2
+                            colour = juce::Colours::darksalmon;
+                            break;
+                            
+                        case 4: //M3
+                            colour = juce::Colours::orangered;
+                            break;
+                        case 9: //M6
+                            colour = juce::Colours::indianred;
+                            break;
+                            
+                        case 11://M7
+                            colour = juce::Colours::darkorange;
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x42, 0xF7});
                             break;
                             
@@ -404,8 +421,11 @@ private:
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x50, 0xF7});
                             break;
                             
-                        case 5: // Perfect
-                        case 7:
+                            //Perfect
+                        case 5: // P4
+                            colour = juce::Colours::mediumseagreen;
+                            break;
+                        case 7: // P5
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x65, 0xF7});
                             colour = juce::Colours::green;
                             break;
@@ -419,6 +439,7 @@ private:
                             // padDevice.pads.at(i).setColour(juce::TextButton::ColourIds::buttonColourId, colour);
                     }
                     
+
                     //度数ごとの色を反映
                     padDevice.pads.at(i).setCurrentColour(colour);
                     
