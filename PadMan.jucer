@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="ysDXhx" name="PadMan" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
-              companyName="watchanlab" companyCopyright="watchanlab" companyWebsite="https://twitter.com/watchan"
-              pluginCode="pdmn" pluginFormats="buildAU,buildStandalone,buildVST3"
-              pluginCharacteristicsValue="pluginIsMidiEffectPlugin">
+              addUsingNamespaceToJuceHeader="1" displaySplashScreen="1" jucerFormatVersion="1"
+              companyName="watchanLab" companyCopyright="watchanLab" companyWebsite="https://twitter.com/watchan"
+              pluginCode="pdmn" pluginFormats="buildAU,buildStandalone,buildVST3">
   <MAINGROUP id="tswwMz" name="PadMan">
     <GROUP id="{C01A3810-D3E1-C510-8737-9ED588AAAB3D}" name="Source">
       <FILE id="Oegjx4" name="PluginProcessor.cpp" compile="1" resource="0"
