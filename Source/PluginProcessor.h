@@ -59,5 +59,19 @@ public:
 
 private:
     //==============================================================================
+    
+    static BusesProperties getBusesLayout()
+    {
+        // Reference of MIDILogger Plug-in
+        // Ableton Live doesn't like to load midi-only plugins, so we add an audio input and output.
+        const PluginHostType host;
+      
+        return host.isAbletonLive() ? BusesProperties().withInput("input", AudioChannelSet::stereo()).withOutput("out", AudioChannelSet::stereo())
+                                                     : BusesProperties();
+  
+    }
+
+    
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PadManAudioProcessor)
 };
