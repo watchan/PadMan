@@ -17,6 +17,16 @@ int Chord::getRootNoteNumber()
     return this->rootNoteNumber;
 }
 
+int Chord::getNumberOfNotes()
+{
+    return this->notes.size();
+}
+
+vector<int> Chord::getNotes()
+{
+    return this->notes;
+}
+
 //Setter
 void Chord::setRootNoteNumber(int rootNoteNumber)
 {
@@ -43,13 +53,13 @@ int Chord::getIndexOfNote(vector<int> chord, int noteNumber)
 /// - Parameter noteNumber: Note number you want to add to this chord.
 void Chord::addNoteToChord(int noteNumber){
     
-    if(getIndexOfNote(this->chord, noteNumber)== -1)
+    if(getIndexOfNote(this->notes, noteNumber)== -1)
     {
         //含まれていなければnoteNumberをchordに格納
-        this->chord.push_back(noteNumber);
+        this->notes.push_back(noteNumber);
         
         //低い音から順に並べる
-        sort(this->chord.begin(), this->chord.end());
+        sort(this->notes.begin(), this->notes.end());
         
         //最低音が更新されたらrootNoteNumberを更新する
         if(noteNumber < rootNoteNumber)
@@ -62,25 +72,25 @@ void Chord::addNoteToChord(int noteNumber){
 
 void Chord::removeNoteNumberFromChord(int noteNumber)
 {
-    int index = getIndexOfNote(this->chord, noteNumber);
+    int index = getIndexOfNote(this->notes, noteNumber);
     //chordの中にnoteNumberが存在することが確認できたら
     if(index != -1)
     {
         //chordの中の要素が1つ以上あれば
-        if(this->chord.size()>1)
+        if(this->notes.size()>1)
         {
             
             //削除対象がrootNoteNumberだった場合
-            if(this->chord.at(index)== rootNoteNumber)
+            if(this->notes.at(index)== rootNoteNumber)
             {
                 //2番めに低い音をrootNoteNumberとして更新 ：理由 rootNoteNumberが削除されルートがわからなくため
-                rootNoteNumber = this->chord.at(index+1);
+                rootNoteNumber = this->notes.at(index+1);
             }
             
         }
         
         //見つかったnoteNumberをchordからeraseする
-        this->chord.erase(std::cbegin(this->chord) + index);
+        this->notes.erase(std::cbegin(this->notes) + index);
 
     }
     
@@ -91,9 +101,9 @@ void Chord::removeNoteNumberFromChord(int noteNumber)
 void Chord::showChord()
 {
     std::cout << "showChord:";
-    for(int i=0 ; i<chord.size(); i++)
+    for(int i=0 ; i<notes.size(); i++)
     {
-        std::cout << chord.at(i) << " ";
+        std::cout << notes.at(i) << " ";
     }
     
     std::cout << "\n";

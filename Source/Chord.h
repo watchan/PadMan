@@ -18,10 +18,12 @@ class Chord
 public:
     Chord(){};
     
-    //Setter
-    int getRootNoteNumber();
-    
     //Getter
+    int getRootNoteNumber();
+    int getNumberOfNotes();
+    vector<int> getNotes();
+    
+    //Setter
     void setRootNoteNumber(int rootNoteNumber);
     
     //Find note number from chord
@@ -42,7 +44,7 @@ public:
      
 private:
     
-    vector<int> chord;
+    vector<int> notes;
     int rootNoteNumber = 128;
     string chordName;
     string chordDegreeName;
