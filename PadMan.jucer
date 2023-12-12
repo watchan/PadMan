@@ -4,9 +4,11 @@
               addUsingNamespaceToJuceHeader="1" displaySplashScreen="1" jucerFormatVersion="1"
               companyName="watchanLab" companyCopyright="watchanLab" companyWebsite="https://twitter.com/watchan"
               pluginCode="pdmn" pluginFormats="buildAU,buildStandalone,buildVST3"
-              version="1.0.1" pluginCharacteristicsValue="pluginIsMidiEffectPlugin">
+              version="1.0.3" pluginCharacteristicsValue="pluginIsMidiEffectPlugin">
   <MAINGROUP id="tswwMz" name="PadMan">
     <GROUP id="{C01A3810-D3E1-C510-8737-9ED588AAAB3D}" name="Source">
+      <FILE id="Soa4gY" name="Chord.cpp" compile="1" resource="0" file="Source/Chord.cpp"/>
+      <FILE id="RNOHjN" name="Chord.h" compile="0" resource="0" file="Source/Chord.h"/>
       <FILE id="Oegjx4" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="b13EHK" name="PluginProcessor.h" compile="0" resource="0"

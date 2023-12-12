@@ -30,7 +30,7 @@ public:
     int getIndexOfNote(vector<int> chord, int noteNumber);
     
     //Recognize and Get the chord name
-    string recognizeChord(vector<int> chord);
+    string getChordName();
     
     //Add note number to chord
     void addNoteToChord(int noteNumber);
@@ -41,6 +41,7 @@ public:
     //Print chord information to DBA
     void showChord();
     
+    bool isTension(int intervalFromRoot);
      
 private:
     

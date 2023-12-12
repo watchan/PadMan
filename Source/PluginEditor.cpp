@@ -12,6 +12,7 @@
 //Padの初期値
 #define MIDI_INPUT_LIST 50
 #define KEY_HEIGHT 80
+#define CHORD_NAME_HEIGHT 50
 #define PAD_ROW 8
 #define PAD_COL 8
 #define PAD_KEY 0
@@ -64,7 +65,7 @@ PadManAudioProcessorEditor::PadManAudioProcessorEditor (PadManAudioProcessor& p)
             padDevice.getMargin() + (padDevice.getMargin()+padDevice.getButtonSize())*padDevice.getCol(),
             
             // Height : margin + Size of Software Keyboard + (Margin + pad) Number of Pad Col
-            padDevice.getMargin() + (padDevice.getMargin() + padDevice.getSize()) * padDevice.getCol()
+            padDevice.getMargin() + CHORD_NAME_HEIGHT+ (padDevice.getMargin() + padDevice.getSize()) * padDevice.getCol()
             
             );
     
@@ -101,6 +102,12 @@ PadManAudioProcessorEditor::PadManAudioProcessorEditor (PadManAudioProcessor& p)
     addAndMakeVisible (keyboardComponent);
     keyboardState.addListener (this);
   
+    
+    //Chord Name
+    chordNameLabel.setFont(20.0f);
+    addAndMakeVisible (chordNameLabel);
+    chordNameLabel.setText ("-", juce::dontSendNotification);
+    
     //Editorに各PadをaddAndMakeVisibleする
     for(int i=0,padnum=0; i < padDevice.getRow() ; i++)
     {
@@ -123,9 +130,10 @@ void PadManAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     
-    /*
+    
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
-
+    
+/*
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
     g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
@@ -138,11 +146,14 @@ void PadManAudioProcessorEditor::resized()
     
     auto area = getLocalBounds();
 
-
+    
     midiInputList    .setBounds (area.removeFromTop (36).removeFromRight (getWidth() - 150).reduced(8));
-
-    keyboardComponent.setBounds (area.removeFromTop (KEY_HEIGHT));
    
+    keyboardComponent.setBounds (area.removeFromTop (KEY_HEIGHT));
+    
+    chordNameLabel   .setBounds(area.removeFromTop(CHORD_NAME_HEIGHT));
+
+ 
     //Padのインデックス
     int padnum=0;
 
@@ -150,7 +161,7 @@ void PadManAudioProcessorEditor::resized()
     //Padの情報に合わせて配置を決める
     //auto bounds = getLocalBounds();
     //int bottom = area.getHeight() -  padDevice.getButtonSize() +  padDevice.getMargin() ;
-    int bottom = area.getHeight() + KEY_HEIGHT - 36 + padDevice.getMargin();
+    int bottom = area.getHeight() + CHORD_NAME_HEIGHT + KEY_HEIGHT - 36 + padDevice.getMargin();
     int left = area.getX() +  padDevice.getMargin();
         
     juce::Colour colour;

@@ -182,14 +182,14 @@ private:
         DBG(message.getDescription());
         
         modifyPad();
+        chordNameLabel.setText(chord.getChordName(),juce::dontSendNotification);
         
-    
         if(chord.getNumberOfNotes()==0)
         {
             chord.setRootNoteNumber(128);
         }
         
-       chord.showChord();
+        chord.showChord();
         
     }
     
@@ -218,13 +218,13 @@ private:
             //コード色判定
             for(int j = 0 ; j < chord.getNumberOfNotes() ; j++)
             {
-      
+                
                 if(padDevice.pads.at(i).getNoteNumber() == chord.getNotes().at(j))
                 {
                     
                     
                     int degree = padDevice.pads.at(i).getDegree(chord.getRootNoteNumber());
-                    string padText;
+                    string padText = "N/A";
                     
                     //度数判定
                     switch(degree)
@@ -232,55 +232,68 @@ private:
                             
                         case 0://root
                             colour = juce::Colours::red;
-                            
+                            padText = "R";
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x48, 0xF7});
                             break;
                             
                             //Minor
                         case 1: //m2
                             colour = juce::Colours::deepskyblue;
+                            padText = "m2";
                             break;
                         case 3: //m3
                             colour = juce::Colours::dodgerblue;
+                            padText = "m3";
+                            
                             break;
                         case 8: //m6
                             colour = juce::Colours::royalblue;
+                            padText = "m6";
                             break;
                             
                         case 10://7
                             colour = juce::Colours::blue;
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x51, 0xF7});
+                            padText = "b7";
                             break;
                             
                             //Major
                         case 2: //m2
                             colour = juce::Colours::darksalmon;
+                            padText = "2";
                             break;
                             
                         case 4: //M3
                             colour = juce::Colours::orangered;
+                            padText = "3";
                             break;
+                            
                         case 9: //M6
                             colour = juce::Colours::indianred;
+                            padText = "6";
                             break;
                             
                         case 11://M7
                             colour = juce::Colours::darkorange;
+                            padText = "7";
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x42, 0xF7});
                             break;
                             
                         case 6: //Diminished
                             colour = juce::Colours::blueviolet;
+                            padText = "b5";
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x50, 0xF7});
                             break;
                             
                             //Perfect
                         case 5: // P4
                             colour = juce::Colours::mediumseagreen;
+                            padText = "4";
                             break;
                         case 7: // P5
                             //outDevice->sendMessageNow({0xF0 ,0x00,0x20, 0x29, 0x02, 0x0E, 0x03, 0x00,  i/8 * 10 + 11 + i%8, 0x65, 0xF7});
                             colour = juce::Colours::green;
+                            padText = "5";
                             break;
                         default :
                             colour = juce::Colours::dimgrey;
@@ -297,8 +310,7 @@ private:
                     padDevice.pads.at(i).setCurrentColour(colour);
                     
                     //Padに度数をセット
-                    padDevice.pads.at(i).setPadText(padDevice.pads.at(i).getDegreeName(chord.getRootNoteNumber()));
-                    
+                    padDevice.pads.at(i).setPadText(padText);
                     
                     
                 }
@@ -328,7 +340,10 @@ private:
     
     //Chord
     Chord chord;
-
+    Label chordNameLabel;
+    
+    
+    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (PadManAudioProcessorEditor)
     
