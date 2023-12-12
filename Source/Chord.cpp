@@ -1,45 +1,44 @@
 /*
-  ==============================================================================
-
-    Chord.cpp
-    Created: 10 Dec 2023 9:37:43pm
-    Author:  watchan
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ Chord.cpp
+ Created: 10 Dec 2023 9:37:43pm
+ Author:  watchan
+ 
+ ==============================================================================
+ */
 #include "Chord.h"
 
 
-//Getter
-/// Get Root Number of this Chord
+// Getter =============================================//
+/// Return Root Number of this Chord
 int Chord::getRootNoteNumber()
 {
     return this->rootNoteNumber;
 }
 
+/// Return Number of Notes. Return the size of vector<int>
 int Chord::getNumberOfNotes()
 {
     return this->notes.size();
 }
 
+/// Return vector<int> notes to access each note.
 vector<int> Chord::getNotes()
 {
     return this->notes;
 }
 
-//Setter
-void Chord::setRootNoteNumber(int rootNoteNumber)
-{
-    this->rootNoteNumber = rootNoteNumber;
-}
 
-
-// Add and Remove note
-int Chord::getIndexOfNote(vector<int> chord, int noteNumber)
+/// Return the number from the first note.
+/// - Parameters:
+///   - notes: From vector<int> notes
+///   - noteNumber: Note number you want to find.
+int Chord::getIndexOfNote(vector<int> notes, int noteNumber)
 {
-    auto itr = std::find(chord.begin(), chord.end(), noteNumber);
-    size_t index = std::distance ( chord.begin(), itr);
-    if(index != chord.size())
+    auto itr = std::find(notes.begin(), notes.end(), noteNumber);
+    size_t index = std::distance ( notes.begin(), itr);
+    if(index != notes.size())
     {
         return index;
     }
@@ -48,6 +47,17 @@ int Chord::getIndexOfNote(vector<int> chord, int noteNumber)
     }
     
 }
+
+// Setter =============================================//
+
+/// Set root note for decide the degree or chord name
+/// - Parameter rootNoteNumber: The lowest note in all notes.
+void Chord::setRootNoteNumber(int rootNoteNumber)
+{
+    this->rootNoteNumber = rootNoteNumber;
+}
+
+
 
 /// You can add the new note to this chord.
 /// - Parameter noteNumber: Note number you want to add to this chord.
@@ -70,6 +80,8 @@ void Chord::addNoteToChord(int noteNumber){
     }
 }
 
+/// Remove Note From Chord
+/// - Parameter noteNumber: If this chord has noteNumber, remove the note from this chord.
 void Chord::removeNoteNumberFromChord(int noteNumber)
 {
     int index = getIndexOfNote(this->notes, noteNumber);
@@ -91,13 +103,14 @@ void Chord::removeNoteNumberFromChord(int noteNumber)
         
         //見つかったnoteNumberをchordからeraseする
         this->notes.erase(std::cbegin(this->notes) + index);
-
+        
     }
     
 }
 
 
 
+/// Show all notes for debug
 void Chord::showChord()
 {
     std::cout << "showChord:";

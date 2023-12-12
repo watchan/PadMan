@@ -30,7 +30,7 @@ public:
     int getIndexOfNote(vector<int> chord, int noteNumber);
     
     //Recognize and Get the chord name
-    string recognizeChord(vector<int> chord);
+    string getChordName(vector<int> chord);
     
     //Add note number to chord
     void addNoteToChord(int noteNumber);
