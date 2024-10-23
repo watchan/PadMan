@@ -1,4 +1,4 @@
-# PadMan
+# PadMan (Pad Viewer MIDI Effect plugin)
 This is a useful tool for learning how to play Ableton Push, LaunchPad, APC64, Linnstrument, and other pad controllers. PadMan tells you the degree of each note in a chord.  
 https://twitter.com/watchan/status/1733245224942817651
 
