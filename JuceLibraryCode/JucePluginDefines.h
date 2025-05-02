@@ -71,7 +71,7 @@
  #define JucePlugin_ProducesMidiOutput     0
 #endif
 #ifndef  JucePlugin_IsMidiEffect
- #define JucePlugin_IsMidiEffect           0
+ #define JucePlugin_IsMidiEffect           1
 #endif
 #ifndef  JucePlugin_EditorRequiresKeyboardFocus
  #define JucePlugin_EditorRequiresKeyboardFocus  0
@@ -95,7 +95,7 @@
  #define JucePlugin_Vst3Category           "Fx"
 #endif
 #ifndef  JucePlugin_AUMainType
- #define JucePlugin_AUMainType             'aufx'
+ #define JucePlugin_AUMainType             'aumi'
 #endif
 #ifndef  JucePlugin_AUSubType
  #define JucePlugin_AUSubType              JucePlugin_PluginCode
