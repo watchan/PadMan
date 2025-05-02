@@ -19,6 +19,11 @@ static const unsigned char temp_binary_data_0[] =
 "\n"
 "# Release Note\n"
 "\n"
+"## v1.0.2\n"
+"- Bugfix: Fixed a bug where PadMan was not recognized as a VST plugin by some DAWs.  \n"
+"- New feature: Implemented a feature that detects and displays the chord based on MIDI input.\n"
+"\n"
+"\n"
 "## v1.0.1\n"
 "Bugfix: Some DAWs had been recognize Padman as Audio Plug-in  \n"
 "\n"
@@ -41,7 +46,7 @@ const char* getNamedResource (const char* resourceNameUTF8, int& numBytes)
 
     switch (hash)
     {
-        case 0x64791dc8:  numBytes = 479; return README_md;
+        case 0x64791dc8:  numBytes = 671; return README_md;
         default: break;
     }
 
