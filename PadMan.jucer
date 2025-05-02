@@ -6,15 +6,6 @@
               pluginCode="pdmn" pluginFormats="buildAU,buildStandalone,buildVST3"
               version="1.0.2" pluginCharacteristicsValue="pluginIsMidiEffectPlugin">
   <MAINGROUP id="tswwMz" name="PadMan">
-    <GROUP id="{12D1210B-3E0D-6787-14AB-0EE383E31CBD}" name="Release">
-      <FILE id="iOOWM2" name="PadMan_v1.0.0.zip" compile="0" resource="0"
-            file="Release/PadMan_v1.0.0.zip" xcodeResource="1"/>
-      <FILE id="dO1Uvv" name="PadMan_V1.0.1.zip" compile="0" resource="0"
-            file="Release/PadMan_V1.0.1.zip" xcodeResource="1"/>
-      <FILE id="lPKeYk" name="PadMan_v1.0.2.zip" compile="0" resource="0"
-            file="Release/PadMan_v1.0.2.zip" xcodeResource="1"/>
-    </GROUP>
-    <FILE id="FQGwG1" name="README.md" compile="0" resource="1" file="README.md"/>
     <GROUP id="{C01A3810-D3E1-C510-8737-9ED588AAAB3D}" name="Source">
       <FILE id="Soa4gY" name="Chord.cpp" compile="1" resource="0" file="Source/Chord.cpp"/>
       <FILE id="RNOHjN" name="Chord.h" compile="0" resource="0" file="Source/Chord.h"/>
