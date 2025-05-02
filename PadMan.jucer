@@ -6,6 +6,7 @@
               pluginCode="pdmn" pluginFormats="buildAU,buildStandalone,buildVST3"
               version="1.0.2">
   <MAINGROUP id="tswwMz" name="PadMan">
+    <FILE id="z2h2h5" name="README.md" compile="0" resource="1" file="README.md"/>
     <GROUP id="{C01A3810-D3E1-C510-8737-9ED588AAAB3D}" name="Source">
       <FILE id="Soa4gY" name="Chord.cpp" compile="1" resource="0" file="Source/Chord.cpp"/>
       <FILE id="RNOHjN" name="Chord.h" compile="0" resource="0" file="Source/Chord.h"/>
