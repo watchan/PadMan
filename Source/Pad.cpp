@@ -121,22 +121,22 @@ std::string Pad::getDegreeName(int root)
             degName="m3";
         }
     }else if(degree==4){
-        degName="M3";
+        degName="3";
     }else if(degree==5){
         
         if(root + 12 < noteNumber){
             degName="11";
         }else{
-            degName="P4";
+            degName="4";
         }
     }else if(degree==6){
         if(root + 12 < noteNumber){
            degName="#11";
         }else{
-            degName="a4/d5";
+            degName="b5";
         }
     }else if(degree==7){
-            degName="P5";
+            degName="5";
     }else if(degree==8){
         if(root + 12 < noteNumber){
 
@@ -148,14 +148,14 @@ std::string Pad::getDegreeName(int root)
         if(root + 12 < noteNumber){
           degName="13";
         }else{
-            degName="M6";
+            degName="6";
         }
     }else if(degree==10){
 
-        degName="7";
+        degName="b7";
 
     }else if(degree==11){
-        degName="M7";
+        degName="7";
     }
     
     return degName;
