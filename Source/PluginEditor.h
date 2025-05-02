@@ -181,8 +181,8 @@ private:
         
         DBG(message.getDescription());
         
-        modifyPad();
         chordNameLabel.setText(chord.getChordName(),juce::dontSendNotification);
+        modifyPad();
         
         if(chord.getNumberOfNotes()==0)
         {
